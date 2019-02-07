@@ -1,6 +1,10 @@
 #include "neuralNetwork.h"
+
+
+
 NeuralNetwork::NeuralNetwork(int n, int *cells, std::string func)
 {
+	Timer creationTime = Timer();
 	Neuron::function = func;
 	for (int i = 0; i < n; i++) {
 		//name creation
@@ -19,7 +23,19 @@ NeuralNetwork::NeuralNetwork(int n, int *cells, std::string func)
 	for (int j = 0; j < this->layers.size(); j++) {
 		this->layers[j]->createCells();
 	}
-	//delete info;
+	std::cout << "Creating the network took " << creationTime.getTimeElapsed() << "ms to complete" << std::endl;
+}
+
+
+void NeuralNetwork::randomParameterize(float minBias, float maxBias, float minWeight, float maxWeight) {
+	int seed = Timer::getCurrentTime();
+	std::cout << "Current seed is " << seed << std::endl;
+	srand(seed);
+
+	for (int i = 0; i < this->layers.size(); i++) {
+		this->layers[i]->randomize(minBias, maxBias, minWeight, maxWeight);
+	}
+	
 }
 
 float* NeuralNetwork::computeResult(float input[], int inputSize) {
@@ -29,6 +45,7 @@ float* NeuralNetwork::computeResult(float input[], int inputSize) {
 		return nullptr;
 	}
 	else {
+		Timer* iterationTime = new Timer();
 		//for(int i = 0; i < )
 		int size = this->layers.size();
 		delete[] output;
@@ -38,17 +55,21 @@ float* NeuralNetwork::computeResult(float input[], int inputSize) {
 			if (i == 0) {
 				for (int j = 0; j < this->layers[0]->getNumCells(); j++) {
 					(*cells)[j]->setValue(input[j]);
+					//DEBO CALCULAR AQUÍ EL VALOR CON CALCULATE VALUE??
+					(*cells)[j]->calculateValue();
 					(*cells)[j]->sendToOutputs();
 				}
 			}
 			else if (i == size - 1) {
+				
+				std::cout << "the output is: ";
 				for (int j = 0; j < this->layers[i]->getNumCells(); j++) {
 					float val = (*cells)[j]->calculateValue();
-					//this->output[j] = (*cells)[j]->getValue();
+					this->output[j] = (*cells)[j]->getValue();
 					this->output[j] = val;
-					std::cout << val;
+					std::cout << val << ", ";
 				}
-				std::cout << std::endl;
+				//std::cout << std::endl;
 			}
 			else {
 				for (int j = 0; j < this->layers[i]->getNumCells(); j++) {
@@ -57,6 +78,8 @@ float* NeuralNetwork::computeResult(float input[], int inputSize) {
 				}
 			}
 		}
+		std::cout << "One iteration took " << iterationTime->getTimeElapsed() << "ms to complete" << std::endl;
+		delete iterationTime;
 	}
 	return this->output;
 }

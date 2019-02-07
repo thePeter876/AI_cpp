@@ -1,5 +1,5 @@
 #include "transmitter.h"
-Transmitter_Inner::Transmitter_Inner(Neuron* o, Neuron* d) {
+Transmitter::Transmitter(Neuron* o, Neuron* d) {
 	this->origin = o;
 	this->destiny = d;
 	this->weight = 0.0;

@@ -13,3 +13,9 @@ void Layer::processInputData() {
 		this->cells[i]->sendToOutputs();
 	}
 }
+
+void Layer::randomize(int minBias, int maxBias, int minWeight, int maxWeight) {
+	for (int j = 0; j < this->numCells; j++) {
+		this->cells[j]->randomize(minBias, maxBias, minWeight, maxWeight);
+	}
+}

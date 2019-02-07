@@ -7,6 +7,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include "timer.h"
 /*class NetWorkInfo {
 private:
 	int numLayers;
@@ -29,12 +30,12 @@ protected:
 	std::vector<Layer*> layers;
 	float *output;
 public:
-	/*NeuralNetwork(NetWorkInfo* info, std::string func = "sigmoid");*/
 	NeuralNetwork(int n, int*c, std::string func = "sigmoid");
 	float* computeResult(float input[], int inputSize);
 
 	inline float* getOutput() { return output; }
 
+	void randomParameterize(float minBias, float maxBias, float minWeight, float maxWeight);
 	void showInfo();
 	~NeuralNetwork() {}
 };

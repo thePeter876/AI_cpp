@@ -4,6 +4,8 @@
 #include "transmitter.h"
 #include <math.h>
 #include <string>
+#include <iostream>
+//#include "neuralNetwork.h"
 class Transmitter;
 class Neuron
 {
@@ -14,6 +16,7 @@ private:
 	std::vector<Transmitter*> inputs;
 	std::vector<Transmitter*> outputs;
 public:
+	static float getRand(int max, int min = 0.0);
 	static std::string function;
 	//Constructor
 	Neuron(float b = 0.0) : bias(b) {}
@@ -31,6 +34,7 @@ public:
 	inline void addInput(Transmitter* t) { this->inputs.push_back(t); }
 
 	//AI functions
+	void randomize(int minBias, int maxBias, int minWeight, int maxWeight);
 	float calculateValue();
 	void sendToOutputs();
 

@@ -9,6 +9,12 @@ private:
 	bool counting;
 
 public:
+	static int getCurrentTime() { 
+		time_t now = time(0);
+		return now;
+	}
+
+
 	Timer() {
 		startMoment = std::chrono::steady_clock::now();
 		counting = true;

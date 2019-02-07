@@ -5,18 +5,19 @@ class Neuron;
 class Transmitter
 {
 protected:
-	//Neuron* origin;
-	//Neuron* destiny;
-	//float weight;
+	Neuron* origin;
+	Neuron* destiny;
+	float weight;
 	float transportedValue;
 public:
 	//Constructor
-	Transmitter() {}
+	Transmitter(Neuron* o, Neuron* d);
 
 	//Get and Set
 	inline float getValue() { return transportedValue; }
 	inline void setValue(float v) { transportedValue = v; }
-	inline virtual float getWeight() = 0;
+	inline float getWeight() { return weight; }
+	inline void setWeight(float w) { weight = w; }
 	//Destroy
 	~Transmitter() {}
 };
@@ -39,7 +40,7 @@ public:
 	inline float getWeight() { return 1.0; }
 };*/
 
-class Transmitter_Inner : public Transmitter {
+/*class Transmitter_Inner : public Transmitter {
 protected:
 	Neuron* origin;
 	Neuron* destiny;
@@ -48,5 +49,5 @@ public:
 	Transmitter_Inner(Neuron* o, Neuron* d);
 	inline void setWeight(float w) { weight = w; }
 	inline float getWeight() { return weight; }
-};
+};*/
 

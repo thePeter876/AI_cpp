@@ -33,7 +33,7 @@ void Layer_Hidden::createCells() {
 			std::vector<Neuron*>* plCells = this->previousLayer->getCells();
 			int numberOfT = plCells->size();
 			for (int j = 0; j < numberOfT; j++) {
-				new Transmitter_Inner((*plCells)[j], cell);
+				new Transmitter((*plCells)[j], cell);
 			}
 		}
 		this->addCell(cell);

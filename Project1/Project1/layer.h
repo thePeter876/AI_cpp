@@ -28,6 +28,7 @@ public:
 	//inline void setNextLayer(Layer* nl) { nextLayer = nl; }
 
 	//AI functions
+	void randomize(int minBias, int maxBias, int minWeight, int maxWeight);
 	void processInputData();
 	virtual void createCells() = 0;
 	virtual void setNextLayer(Layer* nl) {}
