@@ -9,16 +9,16 @@ Transmitter_Inner::Transmitter_Inner(Neuron* o, Neuron* d) {
 	d->addInput(this);
 }
 
-Transmitter_Input::Transmitter_Input(Neuron* d) {
+/*Transmitter_Input::Transmitter_Input(Neuron* d) {
 	this->destiny = d;
 	this->transportedValue = 0.0;
 
 	d->addInput(this);
 }
-
-Transmitter_Output::Transmitter_Output(Neuron* o) {
+*/
+/*Transmitter_Output::Transmitter_Output(Neuron* o) {
 	this->origin = o;
 	this->transportedValue = 0.0;
 
 	o->addOutput(this);
-}
+}*/

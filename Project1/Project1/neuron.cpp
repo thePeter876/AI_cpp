@@ -3,7 +3,7 @@
 
 std::string Neuron::function;
 
-void Neuron::calculateValue() {
+float Neuron::calculateValue() {
 	float v = 0.0;
 	for (int i = 0; i < this->inputs.size(); i++) {
 		v += this->inputs[i]->getValue() * this->inputs[i]->getWeight();
@@ -23,10 +23,11 @@ void Neuron::calculateValue() {
 		v = 1 / (1 + pow(E, -v));
 	}
 	this->value = v;
+	return v;
 }
 
 void Neuron::sendToOutputs() {
-	this->calculateValue();
+	//this->calculateValue();
 	for (int i = 0; i < this->outputs.size(); i++) {
 		this->outputs[i]->setValue(this->value);
 	}

@@ -30,7 +30,35 @@ float* NeuralNetwork::computeResult(float input[], int inputSize) {
 	}
 	else {
 		//for(int i = 0; i < )
+		int size = this->layers.size();
+		delete[] output;
+		this->output = new float[this->layers[size - 1]->getNumCells()];
+		for (int i = 0; i < size; i++) {
+			std::vector<Neuron*>* cells = this->layers[i]->getCells();
+			if (i == 0) {
+				for (int j = 0; j < this->layers[0]->getNumCells(); j++) {
+					(*cells)[j]->setValue(input[j]);
+					(*cells)[j]->sendToOutputs();
+				}
+			}
+			else if (i == size - 1) {
+				for (int j = 0; j < this->layers[i]->getNumCells(); j++) {
+					float val = (*cells)[j]->calculateValue();
+					//this->output[j] = (*cells)[j]->getValue();
+					this->output[j] = val;
+					std::cout << val;
+				}
+				std::cout << std::endl;
+			}
+			else {
+				for (int j = 0; j < this->layers[i]->getNumCells(); j++) {
+					(*cells)[j]->calculateValue();
+					(*cells)[j]->sendToOutputs();
+				}
+			}
+		}
 	}
+	return this->output;
 }
 
 void NeuralNetwork::showInfo() {

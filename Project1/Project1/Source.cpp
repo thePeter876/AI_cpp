@@ -14,6 +14,8 @@ int main(int argc, char argv[]) {
 	int nums[4]{784,16,16,10};
 	NeuralNetwork* network = new NeuralNetwork(4,nums,"ReLU");
 	std::cout << "Creating the network took " << myTimer.getTimeElapsed() << "ms to complete" << std::endl;
+	
+	
 	network->showInfo();
 	return 0;
 }

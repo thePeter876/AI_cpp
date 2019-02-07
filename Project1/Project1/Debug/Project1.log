@@ -1,10 +1,4 @@
-﻿  layer.cpp
-  layer_Hidden.cpp
-  layer_Input.cpp
-  layer_Output.cpp
-  neuralNetwork.cpp
-c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\neuralnetwork.cpp(48): warning C4018: '<': signed/unsigned mismatch
-c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\neuralnetwork.cpp(55): warning C4018: '<': signed/unsigned mismatch
-  Source.cpp
-  Generating Code...
+﻿  neuralNetwork.cpp
+c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\neuralnetwork.cpp(19): warning C4018: '<': signed/unsigned mismatch
+c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\neuralnetwork.cpp(62): warning C4018: '<': signed/unsigned mismatch
   Project1.vcxproj -> C:\Users\pedro\Documents\Proyectos propios\AI_cpp\Project1\Debug\Project1.exe

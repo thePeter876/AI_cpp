@@ -27,10 +27,13 @@ class NeuralNetwork
 {
 protected:
 	std::vector<Layer*> layers;
+	float *output;
 public:
 	/*NeuralNetwork(NetWorkInfo* info, std::string func = "sigmoid");*/
 	NeuralNetwork(int n, int*c, std::string func = "sigmoid");
 	float* computeResult(float input[], int inputSize);
+
+	inline float* getOutput() { return output; }
 
 	void showInfo();
 	~NeuralNetwork() {}

@@ -21,7 +21,7 @@ public:
 	~Transmitter() {}
 };
 
-class Transmitter_Input : public Transmitter
+/*class Transmitter_Input : public Transmitter
 {
 protected:
 	Neuron* destiny;
@@ -37,7 +37,7 @@ protected:
 public:
 	Transmitter_Output(Neuron* o);
 	inline float getWeight() { return 1.0; }
-};
+};*/
 
 class Transmitter_Inner : public Transmitter {
 protected:
