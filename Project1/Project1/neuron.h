@@ -31,7 +31,8 @@ public:
 	inline void addInput(Transmitter* t) { this->inputs.push_back(t); }
 
 	//AI functions
-	inline void calculateValue();
+	void calculateValue();
+	void sendToOutputs();
 
 
 	//Destroy

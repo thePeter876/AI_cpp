@@ -18,11 +18,12 @@ void Layer_Output::createCells() {
 			std::vector<Neuron*>* plCells = this->previousLayer->getCells();
 			int numberOfT = plCells->size();
 			for (int j = 0; j < numberOfT; j++) {
-				new Transmitter((*plCells)[j], cell);
+				new Transmitter_Inner((*plCells)[j], cell);
 				//tList.push_back(new Transmitter((*plCells)[j], cell));
 			}
 			//cell->setInputs(&tList);
 		}
+		new Transmitter_Output(cell);
 		this->addCell(cell);
 	}
 }

@@ -3,7 +3,7 @@
 
 std::string Neuron::function;
 
-inline void Neuron::calculateValue() {
+void Neuron::calculateValue() {
 	float v = 0.0;
 	for (int i = 0; i < this->inputs.size(); i++) {
 		v += this->inputs[i]->getValue() * this->inputs[i]->getWeight();
@@ -22,6 +22,12 @@ inline void Neuron::calculateValue() {
 		//Sigmoid Function
 		v = 1 / (1 + pow(E, -v));
 	}
-	
-	
+	this->value = v;
+}
+
+void Neuron::sendToOutputs() {
+	this->calculateValue();
+	for (int i = 0; i < this->outputs.size(); i++) {
+		this->outputs[i]->setValue(this->value);
+	}
 }

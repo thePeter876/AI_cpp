@@ -4,7 +4,7 @@
 #include <string>
 class Layer
 {
-private:
+protected:
 	std::vector<Neuron*> cells;
 	int numCells;
 	std::string name;
@@ -31,7 +31,7 @@ public:
 	virtual void createCells() = 0;
 	virtual void setNextLayer(Layer* nl) {}
 	virtual void setPreviousLayer(Layer* pl) {}
-
+	virtual void processInputData() {}
 
 	virtual std::string getInfo();
 	//Destroy

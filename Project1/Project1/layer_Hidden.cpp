@@ -1,12 +1,5 @@
 #include "layer_Hidden.h"
 
-
-
-/*Layer_Hidden::Layer_Hidden(Layer* pl) : previousLayer(pl) 
-{
-	pl->setNextLayer(this);
-}*/
-
 Layer_Hidden::Layer_Hidden(int num, Layer* pl, std::string n)
 {
 	this->setNumCells(num);
@@ -41,7 +34,7 @@ void Layer_Hidden::createCells() {
 			std::vector<Neuron*>* plCells = this->previousLayer->getCells();
 			int numberOfT = plCells->size();
 			for (int j = 0; j < numberOfT; j++) {
-				new Transmitter((*plCells)[j], cell);
+				new Transmitter_Inner((*plCells)[j], cell);
 				//tList.push_back(new Transmitter((*plCells)[j], cell));
 			}
 			//cell->setInputs(&tList);
@@ -49,6 +42,15 @@ void Layer_Hidden::createCells() {
 		this->addCell(cell);
 	}
 }
+
+void Layer_Hidden::processInputData() {
+	std::vector<Neuron*>* cells = this->getCells();
+	for (int i = 0; i < this->getNumCells(); i++) {
+		//(*cells)[i]->sendToOutputs(); //calculate the output value and sends it to all transmitters
+		this->cells[i]->sendToOutputs();
+	}
+}
+
 
 std::string Layer_Hidden::getInfo() {
 	int numOfTransmitters = 0;

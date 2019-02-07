@@ -1,8 +1,5 @@
 #include "neuralNetwork.h"
-
-
-
-NeuralNetwork::NeuralNetwork(NetWorkInfo* info, std::string func)
+/*NeuralNetwork::NeuralNetwork(NetWorkInfo* info, std::string func)
 {
 	Neuron::function = func;
 	int num = info->getNumLayers();
@@ -26,6 +23,32 @@ NeuralNetwork::NeuralNetwork(NetWorkInfo* info, std::string func)
 		this->layers[j]->createCells();
 	}
 	delete info;
+}*/
+
+NeuralNetwork::NeuralNetwork(int n, int*cells, std::string func)
+{
+	Neuron::function = func;
+	//int num = info->getNumLayers();
+	//int* cells = info->getNumCells();
+
+	for (int i = 0; i < n; i++) {
+		//name creation
+		std::string buf = "L" + std::to_string(i);
+
+		if (i > 0 && i < n - 1) {
+			this->layers.push_back(new Layer_Hidden(cells[i], this->layers[i - 1], buf));
+		}
+		else if (i == 0) {
+			this->layers.push_back(new Layer_Input(cells[i], buf.c_str()));
+		}
+		else if (i == n - 1) {
+			this->layers.push_back(new Layer_Output(cells[i], this->layers[i - 1], buf.c_str()));
+		}
+	}
+	for (int j = 0; j < this->layers.size(); j++) {
+		this->layers[j]->createCells();
+	}
+	//delete info;
 }
 
 void NeuralNetwork::showInfo() {

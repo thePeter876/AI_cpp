@@ -17,8 +17,8 @@ int main(int argc, char argv[]) {
 	Timer myTimer = Timer();
 
 	int nums[4]{784,16,16,10};
-	NetWorkInfo* structure = new NetWorkInfo(4, nums);
-	NeuralNetwork* network = new NeuralNetwork(structure,"ReLU");
+	//NetWorkInfo* structure = new NetWorkInfo(4, nums);
+	NeuralNetwork* network = new NeuralNetwork(4,nums,"ReLU");
 	std::cout << "Creating the network took " << myTimer.getTimeElapsed() << "ms to complete" << std::endl;
 	network->showInfo();
 

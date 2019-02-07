@@ -7,7 +7,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
-class NetWorkInfo {
+/*class NetWorkInfo {
 private:
 	int numLayers;
 	int* numCells;
@@ -19,7 +19,7 @@ public:
 	inline void setNumLayers(int n) { numLayers = n; }
 	inline void setNumCells(int* c) { numCells = c; }
 	NetWorkInfo() {}
-};
+};*/
 
 
 
@@ -28,10 +28,8 @@ class NeuralNetwork
 private:
 	std::vector<Layer*> layers;
 public:
-	NeuralNetwork(NetWorkInfo* info, std::string func = "sigmoid");
-
-
-
+	/*NeuralNetwork(NetWorkInfo* info, std::string func = "sigmoid");*/
+	NeuralNetwork(int n, int*c, std::string func = "sigmoid");
 
 	void showInfo();
 	~NeuralNetwork() {}

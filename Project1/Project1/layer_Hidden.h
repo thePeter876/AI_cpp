@@ -2,9 +2,10 @@
 #include "layer.h"
 #include "layer_Input.h"
 #include "layer_Output.h"
+#include "neuron.h"
 class Layer_Hidden : public Layer
 {
-private:
+protected:
 	Layer *previousLayer;
 	Layer *nextLayer;
 public:
@@ -18,7 +19,7 @@ public:
 	inline Layer* getNextLayer() { return nextLayer; }
 	inline void setPreviousLayer(Layer* pl) { previousLayer = pl; }
 	inline void setNextLayer(Layer* nl) { nextLayer = nl; }
-
+	inline void processInputData();
 	//AI functions
 	void createCells();
 	std::string getInfo();
