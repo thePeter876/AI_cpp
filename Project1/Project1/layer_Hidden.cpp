@@ -30,26 +30,22 @@ void Layer_Hidden::createCells() {
 	for (int i = 0; i < n; i++) {
 		Neuron* cell = new Neuron();
 		if (this->previousLayer != nullptr) {
-			//std::vector<Transmitter*> tList;
 			std::vector<Neuron*>* plCells = this->previousLayer->getCells();
 			int numberOfT = plCells->size();
 			for (int j = 0; j < numberOfT; j++) {
 				new Transmitter_Inner((*plCells)[j], cell);
-				//tList.push_back(new Transmitter((*plCells)[j], cell));
 			}
-			//cell->setInputs(&tList);
 		}
 		this->addCell(cell);
 	}
 }
 
-void Layer_Hidden::processInputData() {
+/*void Layer_Hidden::processInputData() {
 	std::vector<Neuron*>* cells = this->getCells();
 	for (int i = 0; i < this->getNumCells(); i++) {
-		//(*cells)[i]->sendToOutputs(); //calculate the output value and sends it to all transmitters
 		this->cells[i]->sendToOutputs();
 	}
-}
+}*/
 
 
 std::string Layer_Hidden::getInfo() {

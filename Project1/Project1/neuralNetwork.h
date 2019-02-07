@@ -25,11 +25,12 @@ public:
 
 class NeuralNetwork
 {
-private:
+protected:
 	std::vector<Layer*> layers;
 public:
 	/*NeuralNetwork(NetWorkInfo* info, std::string func = "sigmoid");*/
 	NeuralNetwork(int n, int*c, std::string func = "sigmoid");
+	float* computeResult(float input[], int inputSize);
 
 	void showInfo();
 	~NeuralNetwork() {}

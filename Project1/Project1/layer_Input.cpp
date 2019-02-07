@@ -12,20 +12,16 @@ void Layer_Input::createCells() {
 	for (int i = 0; i < n; i++) {
 		Neuron* cell = new Neuron();
 		new Transmitter_Input(cell);
-		/*if (this->nextLayer != nullptr) {
-			//std::vector<Transmitter*> t;
-			std::vector<Neuron*>* nlCells = this->nextLayer->getCells();
-			int numberOfT = nlCells->size();
-			for (int j = 0; j < numberOfT;j++) {
-				new Transmitter(cell, (*nlCells)[j]);
-				//t.push_back(new Transmitter(cell,(*nlCells)[j]));
-			}
-			//cell->setOutputs(&t);
-		}*/
 		this->addCell(cell);
-		//this->addCell(new Neuron());
 	}
 }
+
+/*void Layer_Input::processInputData() {
+	std::vector<Neuron*>* cells = this->getCells();
+	for (int i = 0; i < this->getNumCells(); i++) {
+		this->cells[i]->sendToOutputs();
+	}
+}*/
 
 std::string Layer_Input::getInfo() {
 	int numOfTransmitters = 0;

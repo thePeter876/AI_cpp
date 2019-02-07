@@ -19,11 +19,12 @@ public:
 	inline Layer* getNextLayer() { return nextLayer; }
 	inline void setPreviousLayer(Layer* pl) { previousLayer = pl; }
 	inline void setNextLayer(Layer* nl) { nextLayer = nl; }
-	inline void processInputData();
+	
 	//AI functions
 	void createCells();
-	std::string getInfo();
+	//void processInputData();
 
+	std::string getInfo();
 	~Layer_Hidden() {}
 };
 

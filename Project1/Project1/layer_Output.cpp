@@ -14,14 +14,11 @@ void Layer_Output::createCells() {
 	for (int i = 0; i < n; i++) {
 		Neuron* cell = new Neuron();
 		if (this->previousLayer != nullptr) {
-			//std::vector<Transmitter*> tList;
 			std::vector<Neuron*>* plCells = this->previousLayer->getCells();
 			int numberOfT = plCells->size();
 			for (int j = 0; j < numberOfT; j++) {
 				new Transmitter_Inner((*plCells)[j], cell);
-				//tList.push_back(new Transmitter((*plCells)[j], cell));
 			}
-			//cell->setInputs(&tList);
 		}
 		new Transmitter_Output(cell);
 		this->addCell(cell);
@@ -29,10 +26,6 @@ void Layer_Output::createCells() {
 }
 
 std::string Layer_Output::getInfo() {
-	/*int numOfTransmitters = 0;
-	for (int i = 0; i < this->getNumCells(); i++) {
-		numOfTransmitters += (*this->getCells())[i]->getOutputs()->size();
-	}*/
 	std::string inf = this->getName() + ", " + std::to_string(this->getNumCells()) 
 		+ " neurons. Prev: " + this->getPreviousLayer()->getName() + ".";
 	return inf;

@@ -28,10 +28,10 @@ public:
 	//inline void setNextLayer(Layer* nl) { nextLayer = nl; }
 
 	//AI functions
+	void processInputData();
 	virtual void createCells() = 0;
 	virtual void setNextLayer(Layer* nl) {}
 	virtual void setPreviousLayer(Layer* pl) {}
-	virtual void processInputData() {}
 
 	virtual std::string getInfo();
 	//Destroy

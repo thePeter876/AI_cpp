@@ -47,6 +47,6 @@ protected:
 public:
 	Transmitter_Inner(Neuron* o, Neuron* d);
 	inline void setWeight(float w) { weight = w; }
-	inline virtual float getWeight() { return weight; }
+	inline float getWeight() { return weight; }
 };
 
