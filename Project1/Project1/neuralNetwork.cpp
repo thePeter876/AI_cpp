@@ -92,6 +92,117 @@ std::vector<float>* NeuralNetwork::computeResult(std::vector<float>* input) {
 	return this->output;
 }
 
+bool NeuralNetwork::backPropagation(std::vector<float>* expectedOutput, Layer* CL, int currentIndex, std::vector<float>* gradient) {
+	//this function should return a vector with a size of all transmitters + all biases and how they should change for the given input
+	Layer* PL = CL->getPreviousLayer();
+	int sizeCL = CL->getNumCells();
+	int sizePL = PL->getNumCells();
+
+	//hacer aquí cambios necesarios en pesos y bias(de las neuronas de esta capa) y calcular expectedOutputPL
+	std::vector<Neuron*>* cellsCL = CL->getCells();
+
+	std::vector<float> diffValues(sizeCL);
+	std::vector<float> costs(sizePL);
+
+	for (int i = 0; i < sizeCL; i++) {
+		std::vector<Transmitter*>* trans = (*cellsCL)[i]->getInputs();
+		float diffValue = Neuron::toDiffFunction((*cellsCL)[i]->getInputValue());
+		diffValues[i] = diffValue;
+		int cost = 2 * ((*cellsCL)[i]->getValue() - (*expectedOutput)[i]);
+		costs[i] = cost;
+		//(*gradient)[currentIndex] = Neuron::toDiffFunction((*cells)[i]->getInputValue()) * 2 * ((*cells)[i]->getValue() - (*expectedOutput)[i]); //cálculo del cambio en bias
+		(*gradient)[currentIndex] += diffValue * cost; //cálculo del cambio en bias
+		currentIndex++;
+		int numInputs = trans->size();
+		for (int j = 0; j < numInputs; j++) {
+			(*gradient)[currentIndex + j] += (*trans)[j]->getValue() * diffValue * cost; //cálculo del cambio en weight
+		}
+		currentIndex += numInputs;
+	}
+	std::vector<float> expectedOutputPL(sizePL);
+	std::vector<Neuron*>* cellsPL = PL->getCells();
+	for (int i = 0; i < sizePL; i++) {
+		std::vector<Transmitter*>* trans = (*cellsPL)[i]->getOutputs();
+		int value = 0;
+		//float diffValue = Neuron::toDiffFunction((*cellsCL)[i]->getInputValue());
+		for (int j = 0; j < sizeCL/*trans->size()*/; j++) {
+			value += (*trans)[j]->getWeight() * diffValues[j] * costs[j];
+		}
+		expectedOutputPL[i] = value;
+	}
+
+	//fin calculo gradiente
+	if (PL != this->layers.front())
+		this->backPropagation(&expectedOutputPL, PL, currentIndex, gradient);
+	return true;
+}
+
+bool NeuralNetwork::deepLearn(std::vector<std::vector<float>>* inputs, std::vector<std::vector<float>>* expectedOutputs) { //cambiar para que reciba un vector de vectores con todos los resultados esperados
+	int sizeInputs = inputs->size();
+	int sizeOutputs = expectedOutputs->size();
+	if (sizeInputs != sizeOutputs) {
+		std::cout << "input data size is different from expectedOutputs data size" << std::endl;
+		return false;
+	} 
+	else {
+		
+		
+		//Comprobación de los datos
+		bool check= true;
+		int rightSize = this->layers.front()->getNumCells();
+		for (int i = 0; i < sizeInputs; i++) {
+			if ((*inputs)[i].size() != rightSize)
+				check = false;
+		}
+		rightSize = this->layers.back()->getNumCells();
+		for (int i = 0; i < sizeOutputs; i++) {
+			if ((*expectedOutputs)[i].size() != rightSize)
+				check = false;
+		}
+		if (!check) return false;
+		
+		//Creación del vector que guarda todos los parametros
+		std::vector<float*> actualParameters;
+		for (int i = this->layers.size()-1; i >= 0; i++) {
+			for (int j = 0; j < this->layers[i]->getNumCells(); j++) {
+				std::vector<Neuron*>* cells = this->layers[i]->getCells();
+				actualParameters.push_back((*cells)[j]->getBiasPTR());
+				for (int w = 0; w < (*cells)[j]->getInputs()->size(); w++) {
+					std::vector<Transmitter*>* trans = (*cells)[j]->getInputs();
+					actualParameters.push_back((*trans)[w]->getWeightPTR());
+				}
+			}
+		}
+		int sizeParameters = actualParameters.size();
+		//Creación de la variable que almacena el gradiente
+		std::vector<float> gradient(sizeParameters);
+		for (int i = 0; i < gradient.size(); i++) {
+			gradient[i] = 0;
+		}
+
+		//BackPropagation
+		int &iterations = sizeInputs;
+		Timer backPropagationTime = Timer();
+		for (int i = 0; i < iterations; i++) {
+			this->computeResult(&((*inputs)[i]));
+			this->backPropagation(&((*expectedOutputs)[i]), this->layers.back(), 0, &gradient);
+		}
+		float totalTime = backPropagationTime.getTimeElapsed();
+
+		//Aplicación del gradiente a los parámetros
+		for (int i = 0; i < sizeParameters; i++) {
+			*(actualParameters[i]) += gradient[i] / iterations;
+		}
+
+		//Cleaning and ending
+		actualParameters.clear();
+		gradient.clear();
+		std::cout << "Learning from " << iterations << " samples took around " << totalTime / (float)iterations << "ms per sample" << std::endl;
+	}
+	return true;
+}
+
+
 void NeuralNetwork::showInfo() {
 	for (int i = 0; i < this->layers.size(); i++) {
 		std::cout << this->layers[i]->getInfo() << std::endl;

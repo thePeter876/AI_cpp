@@ -13,20 +13,20 @@ int main(int argc, char argv[]) {
 
 	srand(Timer::getCurrentTime());
 
-	std::vector<int> nums{ 20,10,5,4 };
+	std::vector<int> nums{ 784,16,16,10 };
 	NeuralNetwork* network = new NeuralNetwork(&nums/*, "ReLU"*/);
-	network->randomParameterize(-5.0, 5.0, -5.0, 5.0);
+	network->randomParameterize(-1.0, 1.0, -1.0, 1.0);
 	network->showInfo();
-	network->saveToFile("networkCheckValues.txt");
+	//network->saveToFile("networkCheckValues.txt");
 	std::vector<float> input;
-	for (int j = 0; j < 50; j++) {
-		for (int i = 0; i < 20; i++) {
+	for (int j = 0; j < 3; j++) {
+		for (int i = 0; i < 784; i++) {
 			input.push_back(Neuron::getRand(1.0, 0.0));
 		}
 		network->computeResult(&input);
 		input.clear();
 	}
-	//Queda demostrado que la red es capaz de devolver como output distintos valores si se le mandan distintos input
+	//Queda demostrado que la red es capaz de devolver como output disti ntos valores si se le mandan distintos input
 
 	std::cout << std::endl;
 

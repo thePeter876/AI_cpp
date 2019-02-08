@@ -36,7 +36,8 @@ public:
 	NeuralNetwork(const char* fileName);
 	void createNetwork(std::vector<int>* cells);
 	std::vector<float>* computeResult(std::vector<float>* input);
-
+	bool backPropagation(std::vector<float>* expectedOutput, Layer* currentLayer, int currentIndex, std::vector<float>* gradient);
+	bool deepLearn(std::vector<std::vector<float>>* inputs,std::vector<std::vector<float>>* expectedOutputs);
 
 	inline std::vector<float>* getOutput() { return output; }
 	void randomParameterize(float minBias, float maxBias, float minWeight, float maxWeight);

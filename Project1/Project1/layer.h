@@ -22,8 +22,8 @@ public:
 	inline int getNumCells() { return numCells; }
 	inline std::vector<Neuron*>* getCells() { return &cells; }
 	inline void addCell(Neuron* n) { this->cells.push_back(n); }
-	//inline Layer* getPreviousLayer() { return previousLayer; }
-	//inline Layer* getNextLayer() { return nextLayer; }
+	inline virtual Layer* getPreviousLayer() { return this; }
+	inline virtual Layer* getNextLayer() { return this; }
 	//inline void setPreviousLayer(Layer* pl) { previousLayer = pl; }
 	//inline void setNextLayer(Layer* nl) { nextLayer = nl; }
 

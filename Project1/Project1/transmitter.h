@@ -17,6 +17,7 @@ public:
 	inline float getValue() { return transportedValue; }
 	inline void setValue(float v) { transportedValue = v; }
 	inline float getWeight() { return weight; }
+	inline float* getWeightPTR() { return &weight; }
 	inline void setWeight(float w) { weight = w; }
 	//Destroy
 	~Transmitter() {}
