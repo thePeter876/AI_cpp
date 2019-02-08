@@ -4,8 +4,16 @@
 
 NeuralNetwork::NeuralNetwork(int n, int *cells, std::string func)
 {
-	Timer creationTime = Timer();
 	Neuron::function = func;
+	this->createNetwork(n, cells);
+}
+
+NeuralNetwork::NeuralNetwork(const char* fileName) {
+	this->readFromFile(fileName);
+}
+
+void NeuralNetwork::createNetwork(int n, int *cells) {
+	Timer creationTime = Timer();
 	for (int i = 0; i < n; i++) {
 		//name creation
 		std::string buf = "L" + std::to_string(i);
@@ -23,19 +31,19 @@ NeuralNetwork::NeuralNetwork(int n, int *cells, std::string func)
 	for (int j = 0; j < this->layers.size(); j++) {
 		this->layers[j]->createCells();
 	}
-	std::cout << "Creating the network took " << creationTime.getTimeElapsed() << "ms to complete" << std::endl;
+	 std::cout << "Creating the network took " << creationTime.getTimeElapsed() << "ms to complete" << std::endl;
 }
 
-
 void NeuralNetwork::randomParameterize(float minBias, float maxBias, float minWeight, float maxWeight) {
+	Timer parameterizeTime = Timer();
 	int seed = Timer::getCurrentTime();
-	std::cout << "Current seed is " << seed << std::endl;
 	srand(seed);
 
 	for (int i = 0; i < this->layers.size(); i++) {
 		this->layers[i]->randomize(minBias, maxBias, minWeight, maxWeight);
 	}
 	
+	//std::cout << "Parameterizing the network took " << parameterizeTime.getTimeElapsed() <<"ms to complete. Current seed is " << seed << std::endl;
 }
 
 float* NeuralNetwork::computeResult(float input[], int inputSize) {
@@ -69,7 +77,7 @@ float* NeuralNetwork::computeResult(float input[], int inputSize) {
 					this->output[j] = val;
 					std::cout << val << ", ";
 				}
-				//std::cout << std::endl;
+				std::cout << std::endl;
 			}
 			else {
 				for (int j = 0; j < this->layers[i]->getNumCells(); j++) {
@@ -90,4 +98,106 @@ void NeuralNetwork::showInfo() {
 	}
 }
 
+bool NeuralNetwork::saveToFile(const char* fileName) {
+	
+	std::ofstream myfile(fileName);
+	if (myfile.is_open()) {
+		Timer saveTime = Timer();
+		int numLayers = this->layers.size();
+		myfile << numLayers << ' ' <<  Neuron::function << std::endl;
+		for (int i = 0; i < numLayers; i++) {
+			myfile << "L: " << this->layers[i]->getName() << ' ' << this->layers[i]->getNumCells() << std::endl;
+		}
+		for (int i = 0; i < numLayers; i++) {
+			for (int j = 0; j < this->layers[i]->getNumCells(); j++) {
+				std::vector<Neuron*>* cells = this->layers[i]->getCells();
+				myfile << "C: " << (*cells)[j]->getBias();
+				std::vector<Transmitter*>* trans = (*cells)[j]->getInputs();
+				for (int w = 0; w < (*trans).size(); w++) {
+					myfile << ' ' << (*trans)[w]->getWeight();
+				}
+				myfile << std::endl;
+			}
+		}
 
+		myfile.close();
+		std::cout << "Saving the network took " << saveTime.getTimeElapsed() << "ms to complete" << std::endl;
+	}
+	else {
+		std::cout << "Unable to open file";
+		return false;
+	}
+	return true;
+}
+
+bool NeuralNetwork::readFromFile(const char* fileName) {
+	this->clear();
+	std::string line;
+	std::ifstream myfile(fileName);
+
+	//creation vars
+	int numLayers;
+
+	if (myfile.is_open())
+	{
+		//First line
+		getline(myfile, line);
+		std::istringstream lineStream(line);
+		lineStream >> numLayers;
+		lineStream >> Neuron::function;
+
+		//Layer lines
+		int* numCells = new int(numLayers);
+		for (int i = 0; i < numLayers; i++) {
+			getline(myfile, line);
+			lineStream = std::istringstream(line);
+			lineStream >> line >> line >> numCells[i];
+		}
+		this->createNetwork(numLayers, numCells);
+
+		//Cell lines
+		for (int i = 0; i < numLayers; i++) {
+			std::vector<Neuron*>* cells = this->layers[i]->getCells();
+			for (int j = 0; j < this->layers[i]->getNumCells(); j++) {
+				getline(myfile, line);
+				lineStream = std::istringstream(line);
+				float bias;
+				lineStream >> line >> bias;
+				(*cells)[j]->setBias(bias);
+				std::vector<Transmitter*>* trans = (*cells)[j]->getInputs();
+				for (int k = 0; k < trans->size(); k++) {
+					float w;
+					lineStream >> w;
+					(*trans)[k]->setWeight(w);
+				}
+			}
+		}
+
+
+		myfile.close();
+	}
+	else {
+		std::cout << "Unable to open file" << std::endl;
+		return false;
+	}
+	return true;
+}
+
+void NeuralNetwork::clear() {
+	this->saveToFile("backup.txt");
+	Timer cleanTime = Timer();
+	for (int i = 0; i < this->layers.size(); i++) {
+		std::vector<Neuron*>* cells = this->layers[i]->getCells();
+		for (int j = 0; j < this->layers[i]->getNumCells(); j++) {
+			std::vector<Transmitter*>* trans = (*cells)[j]->getInputs();
+			for (int w = 0; w < trans->size(); w++) {
+				delete (*trans)[w];
+			}
+			trans->clear();
+		}
+		cells->clear();
+		delete this->layers[i];
+	}
+	this->layers.clear();
+	std::cout << "Cleaning the network took " << cleanTime.getTimeElapsed() << "ms to complete" << std::endl;
+}

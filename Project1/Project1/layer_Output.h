@@ -6,7 +6,7 @@ class Layer_Output : public Layer
 {
 private:
 	//std::vector<Neuron*> cells;
-	std::vector<float> outputs;
+	//std::vector<float> outputs;
 	Layer *previousLayer;
 public:
 	//Constructors
@@ -20,7 +20,7 @@ public:
 
 	//Get and set
 	inline Layer* getPreviousLayer() { return previousLayer; }
-	inline std::vector<float>* getOutputs() { return &outputs; }
+	//inline std::vector<float>* getOutputs() { return &outputs; }
 	inline void setPreviousLayer(Layer* pl) { previousLayer = pl; }
 
 	//AI functions

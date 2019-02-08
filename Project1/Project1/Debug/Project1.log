@@ -1,4 +1,11 @@
-﻿  Source.cpp
+﻿  neuralNetwork.cpp
 c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\timer.h(14): warning C4244: 'return': conversion from 'time_t' to 'int', possible loss of data
-c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\source.cpp(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\neuralnetwork.cpp(31): warning C4018: '<': signed/unsigned mismatch
+c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\neuralnetwork.cpp(42): warning C4018: '<': signed/unsigned mismatch
+c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\neuralnetwork.cpp(43): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\neuralnetwork.cpp(96): warning C4018: '<': signed/unsigned mismatch
+c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\neuralnetwork.cpp(116): warning C4018: '<': signed/unsigned mismatch
+c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\neuralnetwork.cpp(168): warning C4018: '<': signed/unsigned mismatch
+c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\neuralnetwork.cpp(189): warning C4018: '<': signed/unsigned mismatch
+c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\neuralnetwork.cpp(193): warning C4018: '<': signed/unsigned mismatch
   Project1.vcxproj -> C:\Users\pedro\Documents\Proyectos propios\AI_cpp\Project1\Debug\Project1.exe

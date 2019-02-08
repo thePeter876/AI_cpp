@@ -6,7 +6,7 @@ class Layer_Input : public Layer
 {
 private:
 	//std::vector<Neuron*> cells;
-	std::vector<float> inputs;
+	//std::vector<float> inputs;
 	Layer *nextLayer;
 public:
 	//Constructors
@@ -17,9 +17,9 @@ public:
 
 	//Get and set
 	inline Layer* getNextLayer() { return nextLayer; }
-	inline std::vector<float>* getInputs() { return &inputs; }
+	//inline std::vector<float>* getInputs() { return &inputs; }
 	inline void setNextLayer(Layer* nl) { nextLayer = nl; }
-	inline void setInputs(std::vector<float>* i) { inputs = *i; }
+	//inline void setInputs(std::vector<float>* i) { inputs = *i; }
 	
 	//AI functions
 	void createCells();
