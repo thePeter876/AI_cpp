@@ -126,7 +126,6 @@
     <ClCompile Include="neuralNetwork.cpp" />
     <ClCompile Include="neuron.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="timer.cpp" />
     <ClCompile Include="transmitter.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -40,14 +40,6 @@ void Layer_Hidden::createCells() {
 	}
 }
 
-/*void Layer_Hidden::processInputData() {
-	std::vector<Neuron*>* cells = this->getCells();
-	for (int i = 0; i < this->getNumCells(); i++) {
-		this->cells[i]->sendToOutputs();
-	}
-}*/
-
-
 std::string Layer_Hidden::getInfo() {
 	int numOfTransmitters = 0;
 	for (int i = 0; i < this->getNumCells(); i++) {

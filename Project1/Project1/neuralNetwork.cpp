@@ -2,30 +2,31 @@
 
 
 
-NeuralNetwork::NeuralNetwork(int n, int *cells, std::string func)
+NeuralNetwork::NeuralNetwork(std::vector<int>* cells, std::string func)
 {
 	Neuron::function = func;
-	this->createNetwork(n, cells);
+	this->createNetwork(cells);
 }
 
 NeuralNetwork::NeuralNetwork(const char* fileName) {
 	this->readFromFile(fileName);
 }
 
-void NeuralNetwork::createNetwork(int n, int *cells) {
+void NeuralNetwork::createNetwork(std::vector<int>* cells) {
 	Timer creationTime = Timer();
+	int n = cells->size();
 	for (int i = 0; i < n; i++) {
 		//name creation
 		std::string buf = "L" + std::to_string(i);
 
 		if (i > 0 && i < n - 1) {
-			this->layers.push_back(new Layer_Hidden(cells[i], this->layers[i - 1], buf));
+			this->layers.push_back(new Layer_Hidden((*cells)[i], this->layers[i - 1], buf));
 		}
 		else if (i == 0) {
-			this->layers.push_back(new Layer_Input(cells[i], buf.c_str()));
+			this->layers.push_back(new Layer_Input((*cells)[i], buf.c_str()));
 		}
 		else if (i == n - 1) {
-			this->layers.push_back(new Layer_Output(cells[i], this->layers[i - 1], buf.c_str()));
+			this->layers.push_back(new Layer_Output((*cells)[i], this->layers[i - 1], buf.c_str()));
 		}
 	}
 	for (int j = 0; j < this->layers.size(); j++) {
@@ -43,28 +44,27 @@ void NeuralNetwork::randomParameterize(float minBias, float maxBias, float minWe
 		this->layers[i]->randomize(minBias, maxBias, minWeight, maxWeight);
 	}
 	
-	//std::cout << "Parameterizing the network took " << parameterizeTime.getTimeElapsed() <<"ms to complete. Current seed is " << seed << std::endl;
+	std::cout << "Parameterizing the network took " << parameterizeTime.getTimeElapsed() <<"ms to complete. Current seed is " << seed << std::endl;
 }
 
-float* NeuralNetwork::computeResult(float input[], int inputSize) {
+std::vector<float>* NeuralNetwork::computeResult(std::vector<float>* input) {
 	
-	if (inputSize != this->layers[0]->getNumCells()) {
+	if (input->size() != this->layers[0]->getNumCells()) {
 		std::cout << "input data size is different from neural network input size" << std::endl;
 		return nullptr;
 	}
 	else {
-		Timer* iterationTime = new Timer();
-		//for(int i = 0; i < )
+		Timer iterationTime = Timer();
 		int size = this->layers.size();
-		delete[] output;
-		this->output = new float[this->layers[size - 1]->getNumCells()];
+		this->output->clear();
 		for (int i = 0; i < size; i++) {
 			std::vector<Neuron*>* cells = this->layers[i]->getCells();
 			if (i == 0) {
 				for (int j = 0; j < this->layers[0]->getNumCells(); j++) {
-					(*cells)[j]->setValue(input[j]);
-					//DEBO CALCULAR AQUÍ EL VALOR CON CALCULATE VALUE??
-					(*cells)[j]->calculateValue();
+					(*cells)[j]->setValue((*input)[j]);
+					//DEBO CALCULAR AQUÍ EL VALOR CON CALCULATE VALUE?? NO DEBE HACERSE NINGÚN CALCULO PORQUE ENTONCES 
+					//TE CARGAS EL INPUT QUE ACABAS DE SETEARLE. POR TANTO EL BIAS DE LA CÉLULA ES UN DATO INÚTIL...
+					//(*cells)[j]->calculateValue();
 					(*cells)[j]->sendToOutputs();
 				}
 			}
@@ -73,8 +73,9 @@ float* NeuralNetwork::computeResult(float input[], int inputSize) {
 				std::cout << "the output is: ";
 				for (int j = 0; j < this->layers[i]->getNumCells(); j++) {
 					float val = (*cells)[j]->calculateValue();
-					this->output[j] = (*cells)[j]->getValue();
-					this->output[j] = val;
+					//(*this->output)[j] = (*cells)[j]->getValue();
+					this->output->push_back(val);
+					//(*this->output)[j] = val;
 					std::cout << val << ", ";
 				}
 				std::cout << std::endl;
@@ -86,8 +87,7 @@ float* NeuralNetwork::computeResult(float input[], int inputSize) {
 				}
 			}
 		}
-		std::cout << "One iteration took " << iterationTime->getTimeElapsed() << "ms to complete" << std::endl;
-		delete iterationTime;
+		std::cout << "One iteration took " << iterationTime.getTimeElapsed() << "ms to complete" << std::endl;
 	}
 	return this->output;
 }
@@ -147,13 +147,15 @@ bool NeuralNetwork::readFromFile(const char* fileName) {
 		lineStream >> Neuron::function;
 
 		//Layer lines
-		int* numCells = new int(numLayers);
+		std::vector<int> numCells;
 		for (int i = 0; i < numLayers; i++) {
 			getline(myfile, line);
 			lineStream = std::istringstream(line);
-			lineStream >> line >> line >> numCells[i];
+			int aux;
+			lineStream >> line >> line >> aux;
+			numCells.push_back(aux);
 		}
-		this->createNetwork(numLayers, numCells);
+		this->createNetwork(&numCells);
 
 		//Cell lines
 		for (int i = 0; i < numLayers; i++) {

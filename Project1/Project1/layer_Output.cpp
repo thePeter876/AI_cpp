@@ -20,7 +20,6 @@ void Layer_Output::createCells() {
 				new Transmitter((*plCells)[j], cell);
 			}
 		}
-		//new Transmitter_Output(cell);
 		this->addCell(cell);
 	}
 }
