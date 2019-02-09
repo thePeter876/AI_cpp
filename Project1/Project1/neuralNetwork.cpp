@@ -113,7 +113,7 @@ bool NeuralNetwork::backPropagation(std::vector<float>* expectedOutput, Layer* C
 	std::vector<Neuron*>* cellsCL = CL->getCells();
 
 	std::vector<float> diffValues(sizeCL);
-	std::vector<float> costs(sizePL);
+	std::vector<float> costs(sizeCL);
 
 	for (int i = 0; i < sizeCL; i++) {
 		std::vector<Transmitter*>* trans = (*cellsCL)[i]->getInputs();
@@ -156,8 +156,6 @@ bool NeuralNetwork::deepLearn(std::vector<std::vector<float>>* inputs, std::vect
 		return false;
 	} 
 	else {
-		
-		
 		//Comprobación de los datos
 		bool check= true;
 		int rightSize = this->layers.front()->getNumCells();
@@ -174,7 +172,7 @@ bool NeuralNetwork::deepLearn(std::vector<std::vector<float>>* inputs, std::vect
 		
 		//Creación del vector que guarda todos los parametros
 		std::vector<float*> actualParameters;
-		for (int i = this->layers.size()-1; i >= 0; i++) {
+		for (int i = this->layers.size()-1; i >= 0; i--) {
 			for (int j = 0; j < this->layers[i]->getNumCells(); j++) {
 				std::vector<Neuron*>* cells = this->layers[i]->getCells();
 				actualParameters.push_back((*cells)[j]->getBiasPTR());
@@ -187,9 +185,9 @@ bool NeuralNetwork::deepLearn(std::vector<std::vector<float>>* inputs, std::vect
 		int sizeParameters = actualParameters.size();
 		//Creación de la variable que almacena el gradiente
 		std::vector<float> gradient(sizeParameters);
-		for (int i = 0; i < gradient.size(); i++) {
+		/*for (int i = 0; i < gradient.size(); i++) {
 			gradient[i] = 0;
-		}
+		}*/
 
 		//BackPropagation
 		int &iterations = sizeInputs;
@@ -202,7 +200,7 @@ bool NeuralNetwork::deepLearn(std::vector<std::vector<float>>* inputs, std::vect
 
 		//Aplicación del gradiente a los parámetros
 		for (int i = 0; i < sizeParameters; i++) {
-			*(actualParameters[i]) += gradient[i] / iterations;
+			*(actualParameters[i]) -= gradient[i] / iterations;
 		}
 
 		//Cleaning and ending

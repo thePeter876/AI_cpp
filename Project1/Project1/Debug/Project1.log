@@ -1,11 +1,6 @@
 ﻿  Source.cpp
 c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\timer.h(14): warning C4244: 'return': conversion from 'time_t' to 'int', possible loss of data
-c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\source.cpp(21): warning C4305: 'initializing': truncation from 'double' to '_Ty'
-          with
-          [
-              _Ty=float
-          ]
-c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\source.cpp(24): warning C4305: 'initializing': truncation from 'double' to '_Ty'
+c:\users\pedro\documents\proyectos propios\ai_cpp\project1\project1\source.cpp(22): warning C4305: 'initializing': truncation from 'double' to '_Ty'
           with
           [
               _Ty=float
