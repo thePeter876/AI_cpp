@@ -47,10 +47,14 @@ void NeuralNetwork::randomParameterize(float minBias, float maxBias, float minWe
 	std::cout << "Parameterizing the network took " << parameterizeTime.getTimeElapsed() <<"ms to complete. Current seed is " << seed << std::endl;
 }
 
-std::vector<float>* NeuralNetwork::computeResult(std::vector<float>* input) {
+std::vector<float>* NeuralNetwork::computeResult(std::vector<float>* input, std::vector<float>* expectedOutput) {
 	
-	if (input->size() != this->layers[0]->getNumCells()) {
+	if (input->size() != this->layers.front()->getNumCells()) {
 		std::cout << "input data size is different from neural network input size" << std::endl;
+		return nullptr;
+	}
+	else if (expectedOutput->size() != this->layers.back()->getNumCells()) {
+		std::cout << "output data size is different from expected output data size" << std::endl;
 		return nullptr;
 	}
 	else {
@@ -87,7 +91,14 @@ std::vector<float>* NeuralNetwork::computeResult(std::vector<float>* input) {
 				}
 			}
 		}
-		std::cout << "One iteration took " << iterationTime.getTimeElapsed() << "ms to complete" << std::endl;
+
+		//cost calculation
+		float cost = 0;
+		for (int i = 0; i < this->output->size(); i++)
+			cost += pow(((*this->output)[i] - (*expectedOutput)[i]), 2);
+
+
+		std::cout << "One iteration took " << iterationTime.getTimeElapsed() << "ms to complete, the cost was " << cost << std::endl;
 	}
 	return this->output;
 }
@@ -184,7 +195,7 @@ bool NeuralNetwork::deepLearn(std::vector<std::vector<float>>* inputs, std::vect
 		int &iterations = sizeInputs;
 		Timer backPropagationTime = Timer();
 		for (int i = 0; i < iterations; i++) {
-			this->computeResult(&((*inputs)[i]));
+			this->computeResult(&((*inputs)[i]), &((*expectedOutputs)[i]));
 			this->backPropagation(&((*expectedOutputs)[i]), this->layers.back(), 0, &gradient);
 		}
 		float totalTime = backPropagationTime.getTimeElapsed();

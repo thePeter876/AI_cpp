@@ -35,7 +35,7 @@ public:
 	NeuralNetwork(std::vector<int>* cells, std::string func = "sigmoid");
 	NeuralNetwork(const char* fileName);
 	void createNetwork(std::vector<int>* cells);
-	std::vector<float>* computeResult(std::vector<float>* input);
+	std::vector<float>* computeResult(std::vector<float>* input, std::vector<float>* expectedOutput);
 	bool backPropagation(std::vector<float>* expectedOutput, Layer* currentLayer, int currentIndex, std::vector<float>* gradient);
 	bool deepLearn(std::vector<std::vector<float>>* inputs,std::vector<std::vector<float>>* expectedOutputs);
 
