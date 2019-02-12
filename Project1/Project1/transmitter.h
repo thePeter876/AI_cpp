@@ -4,51 +4,23 @@ class Neuron;
 
 class Transmitter
 {
-protected:
+private:
 	Neuron* origin;
 	Neuron* destiny;
 	float weight;
-	float transportedValue;
+	//float transportedValue;
 public:
 	//Constructor
 	Transmitter(Neuron* o, Neuron* d);
 
 	//Get and Set
-	inline float getValue() { return transportedValue; }
-	inline void setValue(float v) { transportedValue = v; }
-	inline float getWeight() { return weight; }
+	//inline float getValue() { return transportedValue; }
+	const float& getValue();/* { return origin->getValue(); }*/
+	//inline void setValue(float v) { transportedValue = v; }
+	inline const float& getWeight() { return weight; }
 	inline float* getWeightPTR() { return &weight; }
-	inline void setWeight(float w) { weight = w; }
+	inline void setWeight(const float &w) { weight = w; }
 	//Destroy
 	~Transmitter() {}
 };
-
-/*class Transmitter_Input : public Transmitter
-{
-protected:
-	Neuron* destiny;
-public:
-	Transmitter_Input(Neuron* d);
-	inline float getWeight() { return 1.0; }
-};
-
-class Transmitter_Output : public Transmitter
-{
-protected:
-	Neuron* origin;
-public:
-	Transmitter_Output(Neuron* o);
-	inline float getWeight() { return 1.0; }
-};*/
-
-/*class Transmitter_Inner : public Transmitter {
-protected:
-	Neuron* origin;
-	Neuron* destiny;
-	float weight;
-public:
-	Transmitter_Inner(Neuron* o, Neuron* d);
-	inline void setWeight(float w) { weight = w; }
-	inline float getWeight() { return weight; }
-};*/
 

@@ -1,6 +1,6 @@
 #include "neuralNetwork.h"
 
-
+float NeuralNetwork::learnSpeed;
 
 NeuralNetwork::NeuralNetwork(std::vector<int>* cells, std::string func)
 {
@@ -61,6 +61,8 @@ std::vector<float>* NeuralNetwork::computeResult(std::vector<float>* input, std:
 		Timer iterationTime = Timer();
 		int size = this->layers.size();
 		this->output->clear();
+		delete this->output;
+		this->output = new std::vector<float>(this->layers.back()->getNumCells());
 		for (int i = 0; i < size; i++) {
 			std::vector<Neuron*>* cells = this->layers[i]->getCells();
 			if (i == 0) {
@@ -69,25 +71,27 @@ std::vector<float>* NeuralNetwork::computeResult(std::vector<float>* input, std:
 					//DEBO CALCULAR AQUÍ EL VALOR CON CALCULATE VALUE?? NO DEBE HACERSE NINGÚN CALCULO PORQUE ENTONCES 
 					//TE CARGAS EL INPUT QUE ACABAS DE SETEARLE. POR TANTO EL BIAS DE LA CÉLULA ES UN DATO INÚTIL...
 					//(*cells)[j]->calculateValue();
-					(*cells)[j]->sendToOutputs();
+					//(*cells)[j]->sendToOutputs();
 				}
 			}
 			else if (i == size - 1) {
-				
+				Timer aux = Timer();
 				std::cout << "the output is: ";
 				for (int j = 0; j < this->layers[i]->getNumCells(); j++) {
 					float val = (*cells)[j]->calculateValue();
 					//(*this->output)[j] = (*cells)[j]->getValue();
-					this->output->push_back(val);
-					//(*this->output)[j] = val;
+					//this->output->push_back(val);
+					(*this->output)[j] = val;
 					std::cout << val << ", ";
 				}
 				std::cout << std::endl;
+				float t = aux.getTimeElapsed();
+				std::cout << "Last: " << t << std::endl;
 			}
 			else {
 				for (int j = 0; j < this->layers[i]->getNumCells(); j++) {
 					(*cells)[j]->calculateValue();
-					(*cells)[j]->sendToOutputs();
+					//(*cells)[j]->sendToOutputs();
 				}
 			}
 		}
@@ -97,8 +101,9 @@ std::vector<float>* NeuralNetwork::computeResult(std::vector<float>* input, std:
 		for (int i = 0; i < this->output->size(); i++)
 			cost += pow(((*this->output)[i] - (*expectedOutput)[i]), 2);
 
-
-		std::cout << "One iteration took " << iterationTime.getTimeElapsed() << "ms to complete, the cost was " << cost << std::endl;
+		int time = iterationTime.getTimeElapsed();
+		this->computeTime += time;
+		std::cout << "One iteration took " << time << "ms to complete, the cost was " << cost << std::endl;
 	}
 	return this->output;
 }
@@ -148,7 +153,8 @@ bool NeuralNetwork::backPropagation(std::vector<float>* expectedOutput, Layer* C
 	return true;
 }
 
-bool NeuralNetwork::deepLearn(std::vector<std::vector<float>>* inputs, std::vector<std::vector<float>>* expectedOutputs) { //cambiar para que reciba un vector de vectores con todos los resultados esperados
+bool NeuralNetwork::deepLearn(std::vector<std::vector<float>>* inputs, std::vector<std::vector<float>>* expectedOutputs, float speed) { //cambiar para que reciba un vector de vectores con todos los resultados esperados
+	NeuralNetwork::learnSpeed = speed;
 	int sizeInputs = inputs->size();
 	int sizeOutputs = expectedOutputs->size();
 	if (sizeInputs != sizeOutputs) {
@@ -200,7 +206,7 @@ bool NeuralNetwork::deepLearn(std::vector<std::vector<float>>* inputs, std::vect
 
 		//Aplicación del gradiente a los parámetros
 		for (int i = 0; i < sizeParameters; i++) {
-			*(actualParameters[i]) -= gradient[i] / iterations;
+			*(actualParameters[i]) -= NeuralNetwork::learnSpeed * gradient[i] / iterations;
 		}
 
 		//Cleaning and ending

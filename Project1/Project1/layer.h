@@ -16,10 +16,10 @@ public:
 	Layer() {}
 
 	//Get and set
-	inline void setName(std::string n) { name = n; }
-	inline std::string getName() { return name; }
-	inline void setNumCells(int n) { numCells = n; }
-	inline int getNumCells() { return numCells; }
+	inline void setName(const std::string& n) { name = n; }
+	inline const std::string& getName() { return name; }
+	inline void setNumCells(const int& n) { numCells = n; }
+	inline const int& getNumCells() { return numCells; }
 	inline std::vector<Neuron*>* getCells() { return &cells; }
 	inline void addCell(Neuron* n) { this->cells.push_back(n); }
 	inline virtual Layer* getPreviousLayer() { return this; }
@@ -28,13 +28,13 @@ public:
 	//inline void setNextLayer(Layer* nl) { nextLayer = nl; }
 
 	//AI functions
-	void randomize(int minBias, int maxBias, int minWeight, int maxWeight);
-	void processInputData();
+	void randomize(const int& minBias, const int& maxBias, const int& minWeight, const int& maxWeight);
+	//void processInputData();
 	virtual void createCells() = 0;
 	virtual void setNextLayer(Layer* nl) {}
 	virtual void setPreviousLayer(Layer* pl) {}
 
-	virtual std::string getInfo();
+	virtual const std::string& getInfo();
 	//Destroy
 	~Layer() {}
 };

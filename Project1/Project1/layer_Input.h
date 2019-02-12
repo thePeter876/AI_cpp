@@ -4,7 +4,7 @@
 #include "layer_Output.h"
 class Layer_Input : public Layer
 {
-private:
+protected:
 	//std::vector<Neuron*> cells;
 	//std::vector<float> inputs;
 	Layer *nextLayer;
@@ -25,7 +25,7 @@ public:
 	void createCells();
 	//void processInputData();
 
-	std::string getInfo();
+	const std::string& getInfo();
 	//Destroy
 	~Layer_Input() {}
 };

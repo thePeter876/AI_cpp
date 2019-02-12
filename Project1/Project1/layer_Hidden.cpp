@@ -2,17 +2,20 @@
 
 Layer_Hidden::Layer_Hidden(int num, Layer* pl, std::string n)
 {
-	this->setNumCells(num);
+	//this->setNumCells(num);
+	this->numCells = num;
 	if (pl != nullptr) {
 		pl->setNextLayer(this);
 		this->previousLayer = pl;
 	}
-	this->setName(n);
+	//this->setName(n);
+	this->name = n;
 }
 
 Layer_Hidden::Layer_Hidden(int num, Layer* pl, Layer* nl, std::string n)
 {
-	this->setNumCells(num);
+	//this->setNumCells(num);
+	this->numCells = num;
 	if (pl != nullptr) {
 		pl->setNextLayer(this);
 		this->previousLayer = pl;
@@ -21,13 +24,13 @@ Layer_Hidden::Layer_Hidden(int num, Layer* pl, Layer* nl, std::string n)
 		nl->setPreviousLayer(this);
 		this->nextLayer = nl;
 	}
-	this->setName((char*)n.c_str());
+	//this->setName((char*)n.c_str());
+	this->name = (char*)n.c_str();
 }
 
 
 void Layer_Hidden::createCells() {
-	int n = this->getNumCells();
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < this->numCells; i++) {
 		Neuron* cell = new Neuron();
 		if (this->previousLayer != nullptr) {
 			std::vector<Neuron*>* plCells = this->previousLayer->getCells();
@@ -40,13 +43,13 @@ void Layer_Hidden::createCells() {
 	}
 }
 
-std::string Layer_Hidden::getInfo() {
+const std::string& Layer_Hidden::getInfo() {
 	int numOfTransmitters = 0;
-	for (int i = 0; i < this->getNumCells(); i++) {
-		numOfTransmitters += (*this->getCells())[i]->getOutputs()->size();
+	for (int i = 0; i < this->numCells; i++) {
+		numOfTransmitters += this->cells[i]->getOutputs()->size();
 	}
-	std::string inf = this->getName() + ", " + std::to_string(this->getNumCells()) 
+	std::string inf = this->name + ", " + std::to_string(this->numCells) 
 		+ " neurons. Transmitters to next layer: " + std::to_string(numOfTransmitters) + ". Prev: " 
-		+ this->getPreviousLayer()->getName() + ", Next: " + this->getNextLayer()->getName() + ".";
+		+ this->previousLayer->getName() + ", Next: " + this->nextLayer->getName() + ".";
 	return inf;
 }

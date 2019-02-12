@@ -24,7 +24,7 @@ public:
 	void createCells();
 	//void processInputData();
 
-	std::string getInfo();
+	const std::string& getInfo();
 	~Layer_Hidden() {}
 };
 

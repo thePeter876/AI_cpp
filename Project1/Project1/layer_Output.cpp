@@ -1,8 +1,8 @@
 #include "layer_Output.h"
 
 Layer_Output::Layer_Output(int num,  Layer* pl, std::string n) {
-	this->setNumCells(num);
-	this->setName(n);
+	this->numCells = num;
+	this->name = n;
 	if (pl != nullptr) {
 		this->previousLayer = pl;
 		pl->setNextLayer(this);
@@ -10,8 +10,7 @@ Layer_Output::Layer_Output(int num,  Layer* pl, std::string n) {
 }
 
 void Layer_Output::createCells() {
-	int n = this->getNumCells();
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < this->numCells; i++) {
 		Neuron* cell = new Neuron();
 		if (this->previousLayer != nullptr) {
 			std::vector<Neuron*>* plCells = this->previousLayer->getCells();
@@ -24,8 +23,8 @@ void Layer_Output::createCells() {
 	}
 }
 
-std::string Layer_Output::getInfo() {
-	std::string inf = this->getName() + ", " + std::to_string(this->getNumCells()) 
+const std::string& Layer_Output::getInfo() {
+	std::string inf = this->name + ", " + std::to_string(this->numCells) 
 		+ " neurons. Prev: " + this->getPreviousLayer()->getName() + ".";
 	return inf;
 }

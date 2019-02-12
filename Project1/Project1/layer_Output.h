@@ -4,7 +4,7 @@
 #include "layer_Hidden.h"
 class Layer_Output : public Layer
 {
-private:
+protected:
 	//std::vector<Neuron*> cells;
 	//std::vector<float> outputs;
 	Layer *previousLayer;
@@ -25,7 +25,7 @@ public:
 
 	//AI functions
 	void createCells();
-	std::string getInfo();
+	const std::string& getInfo();
 	//Destroy
 	~Layer_Output() {}
 };
